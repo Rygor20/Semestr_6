@@ -1,0 +1,41 @@
+filozofowie() :-
+    % Create mutexes for forks
+    mutex_create(widelec1),
+    mutex_create(widelec2),
+    mutex_create(widelec3),
+    mutex_create(widelec4),
+    mutex_create(widelec5),
+    % Create threads for each of the philosophers with corresponding forks
+    thread_create(filozof(1, widelec1, widelec5), _, [detached(true)]),
+    thread_create(filozof(2, widelec2, widelec1), _, [detached(true)]),
+    thread_create(filozof(3, widelec3, widelec2), _, [detached(true)]),
+    thread_create(filozof(4, widelec4, widelec3), _, [detached(true)]),
+    thread_create(filozof(5, widelec5, widelec4), _, [detached(true)]).
+
+filozof(ID, L, P) :-
+    random_between(1, 100, R1),
+    R is R1 / 100,
+    sleep(R),
+    N is ID - 1,
+    format('~|~t~*c[~w] mysli~n', [N, 32, ID]),
+    random_between(1, 100, R2),
+    R2S is R2 / 100,
+    sleep(R2S),
+    format('~|~t~*c[~w] chce prawy widelec~n', [N, 32, ID]),
+    mutex_lock(P),
+    format('~|~t~*c[~w] podniosl prawy widelec~n', [N, 32, ID]),
+    random_between(1, 100, R3),
+    R3S is R3 / 100,
+    sleep(R3S),
+    format('~|~t~*c[~w] chce lewy widelec~n', [N, 32, ID]),
+    mutex_lock(L),
+    format('~|~t~*c[~w] podniosl lewy widelec~n', [N, 32, ID]),
+    format('~|~t~*c[~w] je~n', [N, 32, ID]),
+    random_between(1, 100, R4),
+    R4S is R4 / 100,
+    sleep(R4S),
+    format('~|~t~*c[~w] odklada prawy widelec~n', [N, 32, ID]),
+    mutex_unlock(P),
+    format('~|~t~*c[~w] odklada lewy widelec~n', [N, 32, ID]),
+    mutex_unlock(L),
+    filozof(ID, L, P).

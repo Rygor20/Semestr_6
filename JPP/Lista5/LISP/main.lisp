@@ -1,0 +1,8 @@
+(load "binomial.lisp")
+(load "binomial2.lisp")
+(load "de.lisp")
+(load "mergesort.lisp")
+(load "prime_factors.lisp")
+(load "primes.lisp")
+(load "totient.lisp")
+(load "totient2.lisp")

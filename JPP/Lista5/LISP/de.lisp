@@ -1,0 +1,11 @@
+(defun extended_gcd (a b)
+  (if (= a 0)
+      (values b 0 1)
+      (multiple-value-bind (g x y)
+          (extended_gcd (mod b a) a)
+        (values g (- y (* (floor b a) x)) x))))
+
+(defun de (a b)
+  (multiple-value-bind (g x y)
+      (extended_gcd a b)
+    (list x y g)))
